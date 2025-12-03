@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Ontology Coverage Analyzer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background-color: #f5f5f5; padding: 24px; line-height: 1.6; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { background: white; border: 1px solid #d1d5db; padding: 24px; margin-bottom: 24px; }
+        .header h1 { font-size: 28px; font-weight: bold; margin-bottom: 8px; }
+        .header p { color: #6b7280; }
+        .summary { background: white; border: 1px solid #d1d5db; padding: 24px; margin-bottom: 24px; }
+        .summary h2 { font-size: 20px; font-weight: bold; margin-bottom: 16px; }
+        .progress-bar-container { margin-bottom: 24px; }
+        .progress-info { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .progress-info .label { font-weight: 600; }
+        .progress-info .count { color: #6b7280; }
+        .progress-bar { width: 100%; height: 24px; background-color: #e5e7eb; border: 1px solid #9ca3af; }
+        .progress-fill { height: 100%; background-color: #22c55e; }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; font-size: 14px; }
+        .stat-item .stat-label { font-weight: 600; margin-bottom: 4px; }
+        .stat-item .stat-value { font-size: 28px; font-weight: bold; }
+        .main-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 24px; }
+        @media (min-width: 1024px) { .main-grid { grid-template-columns: repeat(2, 1fr); } }
+        .panel { background: white; border: 1px solid #d1d5db; padding: 24px; }
+        .panel h2 { font-size: 20px; font-weight: bold; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .icon { width: 20px; height: 20px; }
+        .icon-green { color: #16a34a; }
+        .icon-red { color: #dc2626; }
+        .class-list { max-height: 384px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .class-item { border: 1px solid #d1d5db; padding: 12px; background-color: #f9fafb; }
+        .class-item.undefined { border-color: #fca5a5; background-color: #fef2f2; }
+        .class-name { font-weight: bold; margin-bottom: 4px; }
+        .class-parent { font-size: 14px; color: #374151; margin-bottom: 4px; }
+        .class-parent .label { font-weight: 600; }
+        .class-tags { display: flex; gap: 8px; flex-wrap: wrap; font-size: 12px; }
+        .tag { padding: 4px 8px; border: 1px solid; }
+        .tag-blue { background-color: #dbeafe; border-color: #93c5fd; }
+        .tag-green { background-color: #dcfce7; border-color: #86efac; }
+        .tag-yellow { background-color: #fef9c3; border-color: #fde047; }
+        .no-data { text-align: center; padding: 32px; color: #6b7280; }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        const owl = '<?xml version="1.0"?><Ontology xmlns="http://www.w3.org/2002/07/owl#" xml:base="http://www.semanticweb.org/heinz/ontologies/2025/12/pizza" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" ontologyIRI="http://www.semanticweb.org/heinz/ontologies/2025/12/pizza"><Declaration><Class IRI="#AnchovyTopping"/></Declaration><Declaration><Class IRI="#CaperTopping"/></Declaration><Declaration><Class IRI="#CheeseTopping"/></Declaration><Declaration><Class IRI="#DeepPanBase"/></Declaration><Declaration><Class IRI="#GreenPepperTopping"/></Declaration><Declaration><Class IRI="#HamTopping"/></Declaration><Declaration><Class IRI="#InterestingPizza"/></Declaration><Declaration><Class IRI="#JalapenoPepperTopping"/></Declaration><Declaration><Class IRI="#MargheritaPizza"/></Declaration><Declaration><Class IRI="#MeatPizza"/></Declaration><Declaration><Class IRI="#MeatTopping"/></Declaration><Declaration><Class IRI="#MozzarellaTopping"/></Declaration><Declaration><Class IRI="#MushroomTopping"/></Declaration><Declaration><Class IRI="#NamedPizza"/></Declaration><Declaration><Class IRI="#OliveTopping"/></Declaration><Declaration><Class IRI="#ParmesanTopping"/></Declaration><Declaration><Class IRI="#PepperTopping"/></Declaration><Declaration><Class IRI="#PepperoniTopping"/></Declaration><Declaration><Class IRI="#Pizza"/></Declaration><Declaration><Class IRI="#PizzaBase"/></Declaration><Declaration><Class IRI="#PizzaTopping"/></Declaration><Declaration><Class IRI="#PrawnTopping"/></Declaration><Declaration><Class IRI="#RedPepperTopping"/></Declaration><Declaration><Class IRI="#SalamiTopping"/></Declaration><Declaration><Class IRI="#SeafoodTopping"/></Declaration><Declaration><Class IRI="#Spiciness"/></Declaration><Declaration><Class IRI="#SpicyBeefTopping"/></Declaration><Declaration><Class IRI="#SpicyPizza"/></Declaration><Declaration><Class IRI="#ThinAndCrispyBase"/></Declaration><Declaration><Class IRI="#TomatoTopping"/></Declaration><Declaration><Class IRI="#TunaTopping"/></Declaration><Declaration><Class IRI="#VegetableTopping"/></Declaration><Declaration><Class IRI="#VegetarianPizza"/></Declaration><Declaration><Class IRI="#olivePizza"/></Declaration><Declaration><Class IRI="#pepperoniPizza"/></Declaration><Declaration><Class IRI="#pizzaLotsOfCalorie"/></Declaration><Declaration><Class IRI="#pizzaLowCalorie"/></Declaration><Declaration><Class IRI="#pizzaThatHasCheese"/></Declaration><Declaration><Class IRI="#spicyPepperoniPizza"/></Declaration><EquivalentClasses><Class IRI="#InterestingPizza"/><ObjectIntersectionOf><Class IRI="#Pizza"/><ObjectMinCardinality cardinality="3"><ObjectProperty IRI="#hasTopping"/><Class IRI="#PizzaTopping"/></ObjectMinCardinality></ObjectIntersectionOf></EquivalentClasses><EquivalentClasses><Class IRI="#Spiciness"/><ObjectOneOf><NamedIndividual IRI="#Hot"/><NamedIndividual IRI="#Medium"/><NamedIndividual IRI="#Mild"/></ObjectOneOf></EquivalentClasses><EquivalentClasses><Class IRI="#SpicyPizza"/><ObjectIntersectionOf><Class IRI="#Pizza"/><ObjectSomeValuesFrom><ObjectProperty IRI="#hasTopping"/><ObjectHasValue><ObjectProperty IRI="#hasSpiciness"/><NamedIndividual IRI="#Hot"/></ObjectHasValue></ObjectSomeValuesFrom></ObjectIntersectionOf></EquivalentClasses><EquivalentClasses><Class IRI="#VegetarianPizza"/><ObjectIntersectionOf><Class IRI="#Pizza"/><ObjectAllValuesFrom><ObjectProperty IRI="#hasTopping"/><ObjectUnionOf><Class IRI="#CheeseTopping"/><Class IRI="#VegetableTopping"/></ObjectUnionOf></ObjectAllValuesFrom></ObjectIntersectionOf></EquivalentClasses><EquivalentClasses><Class IRI="#pizzaLotsOfCalorie"/><ObjectIntersectionOf><Class IRI="#Pizza"/><DataSomeValuesFrom><DataProperty IRI="#hasCaloricContent"/><DatatypeRestriction><Datatype abbreviatedIRI="xsd:integer"/><FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive"><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">400</Literal></FacetRestriction></DatatypeRestriction></DataSomeValuesFrom></ObjectIntersectionOf></EquivalentClasses><EquivalentClasses><Class IRI="#pizzaLowCalorie"/><ObjectIntersectionOf><Class IRI="#Pizza"/><DataSomeValuesFrom><DataProperty IRI="#hasCaloricContent"/><DatatypeRestriction><Datatype abbreviatedIRI="xsd:integer"/><FacetRestriction facet="http://www.w3.org/2001/XMLSchema#maxExclusive"><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">400</Literal></FacetRestriction></DatatypeRestriction></DataSomeValuesFrom></ObjectIntersectionOf></EquivalentClasses><EquivalentClasses><Class IRI="#pizzaThatHasCheese"/><ObjectIntersectionOf><Class IRI="#Pizza"/><ObjectSomeValuesFrom><ObjectProperty IRI="#hasTopping"/><Class IRI="#CheeseTopping"/></ObjectSomeValuesFrom></ObjectIntersectionOf></EquivalentClasses><SubClassOf><Class IRI="#AnchovyTopping"/><Class IRI="#SeafoodTopping"/></SubClassOf><SubClassOf><Class IRI="#CaperTopping"/><Class IRI="#VegetableTopping"/></SubClassOf><SubClassOf><Class IRI="#CheeseTopping"/><Class IRI="#PizzaTopping"/></SubClassOf><SubClassOf><Class IRI="#DeepPanBase"/><Class IRI="#PizzaBase"/></SubClassOf><SubClassOf><Class IRI="#GreenPepperTopping"/><Class IRI="#PepperTopping"/></SubClassOf><SubClassOf><Class IRI="#HamTopping"/><Class IRI="#MeatTopping"/></SubClassOf><SubClassOf><Class IRI="#JalapenoPepperTopping"/><Class IRI="#PepperTopping"/></SubClassOf><SubClassOf><Class IRI="#JalapenoPepperTopping"/><ObjectHasValue><ObjectProperty IRI="#hasSpiciness"/><NamedIndividual IRI="#Hot"/></ObjectHasValue></SubClassOf><SubClassOf><Class IRI="#MargheritaPizza"/><Class IRI="#NamedPizza"/></SubClassOf><SubClassOf><Class IRI="#MargheritaPizza"/><ObjectSomeValuesFrom><ObjectProperty IRI="#hasTopping"/><Class IRI="#MozzarellaTopping"/></ObjectSomeValuesFrom></SubClassOf><SubClassOf><Class IRI="#MargheritaPizza"/><ObjectSomeValuesFrom><ObjectProperty IRI="#hasTopping"/><Class IRI="#TomatoTopping"/></ObjectSomeValuesFrom></SubClassOf><SubClassOf><Class IRI="#MargheritaPizza"/><ObjectAllValuesFrom><ObjectProperty IRI="#hasTopping"/><ObjectUnionOf><Class IRI="#MozzarellaTopping"/><Class IRI="#TomatoTopping"/></ObjectUnionOf></ObjectAllValuesFrom></SubClassOf><SubClassOf><Class IRI="#MeatPizza"/><Class IRI="#Pizza"/></SubClassOf><SubClassOf><Class IRI="#MeatTopping"/><Class IRI="#PizzaTopping"/></SubClassOf><SubClassOf><Class IRI="#MozzarellaTopping"/><Class IRI="#CheeseTopping"/></SubClassOf><SubClassOf><Class IRI="#MushroomTopping"/><Class IRI="#VegetableTopping"/></SubClassOf><SubClassOf><Class IRI="#NamedPizza"/><Class IRI="#Pizza"/></SubClassOf><SubClassOf><Class IRI="#OliveTopping"/><Class IRI="#VegetableTopping"/></SubClassOf><SubClassOf><Class IRI="#ParmesanTopping"/><Class IRI="#CheeseTopping"/></SubClassOf><SubClassOf><Class IRI="#PepperTopping"/><Class IRI="#VegetableTopping"/></SubClassOf><SubClassOf><Class IRI="#PepperoniTopping"/><Class IRI="#MeatTopping"/></SubClassOf><SubClassOf><Class IRI="#Pizza"/><ObjectSomeValuesFrom><ObjectProperty IRI="#hasBase"/><Class IRI="#PizzaBase"/></ObjectSomeValuesFrom></SubClassOf><SubClassOf><Class IRI="#Pizza"/><DataSomeValuesFrom><DataProperty IRI="#hasCaloricContent"/><Datatype abbreviatedIRI="xsd:integer"/></DataSomeValuesFrom></SubClassOf><SubClassOf><Class IRI="#PrawnTopping"/><Class IRI="#SeafoodTopping"/></SubClassOf><SubClassOf><Class IRI="#RedPepperTopping"/><Class IRI="#PepperTopping"/></SubClassOf><SubClassOf><Class IRI="#SalamiTopping"/><Class IRI="#MeatTopping"/></SubClassOf><SubClassOf><Class IRI="#SeafoodTopping"/><Class IRI="#PizzaTopping"/></SubClassOf><SubClassOf><Class IRI="#SpicyBeefTopping"/><Class IRI="#MeatTopping"/></SubClassOf><SubClassOf><Class IRI="#ThinAndCrispyBase"/><Class IRI="#PizzaBase"/></SubClassOf><SubClassOf><Class IRI="#TomatoTopping"/><Class IRI="#VegetableTopping"/></SubClassOf><SubClassOf><Class IRI="#TunaTopping"/><Class IRI="#SeafoodTopping"/></SubClassOf><SubClassOf><Class IRI="#VegetableTopping"/><Class IRI="#PizzaTopping"/></SubClassOf><SubClassOf><Class IRI="#olivePizza"/><Class IRI="#NamedPizza"/></SubClassOf><SubClassOf><Class IRI="#olivePizza"/><ObjectSomeValuesFrom><ObjectProperty IRI="#hasTopping"/><Class IRI="#MozzarellaTopping"/></ObjectSomeValuesFrom></SubClassOf><SubClassOf><Class IRI="#olivePizza"/><ObjectSomeValuesFrom><ObjectProperty IRI="#hasTopping"/><Class IRI="#OliveTopping"/></ObjectSomeValuesFrom></SubClassOf><SubClassOf><Class IRI="#olivePizza"/><ObjectSomeValuesFrom><ObjectProperty IRI="#hasTopping"/><Class IRI="#ParmesanTopping"/></ObjectSomeValuesFrom></SubClassOf><SubClassOf><Class IRI="#olivePizza"/><ObjectSomeValuesFrom><ObjectProperty IRI="#hasTopping"/><Class IRI="#TomatoTopping"/></ObjectSomeValuesFrom></SubClassOf><SubClassOf><Class IRI="#olivePizza"/><ObjectAllValuesFrom><ObjectProperty IRI="#hasTopping"/><ObjectUnionOf><Class IRI="#MozzarellaTopping"/><Class IRI="#OliveTopping"/><Class IRI="#ParmesanTopping"/><Class IRI="#TomatoTopping"/></ObjectUnionOf></ObjectAllValuesFrom></SubClassOf><SubClassOf><Class IRI="#pepperoniPizza"/><Class IRI="#NamedPizza"/></SubClassOf><SubClassOf><Class IRI="#pepperoniPizza"/><ObjectSomeValuesFrom><ObjectProperty IRI="#hasTopping"/><Class IRI="#MozzarellaTopping"/></ObjectSomeValuesFrom></SubClassOf><SubClassOf><Class IRI="#pepperoniPizza"/><ObjectSomeValuesFrom><ObjectProperty IRI="#hasTopping"/><Class IRI="#PepperoniTopping"/></ObjectSomeValuesFrom></SubClassOf><SubClassOf><Class IRI="#pepperoniPizza"/><ObjectSomeValuesFrom><ObjectProperty IRI="#hasTopping"/><Class IRI="#TomatoTopping"/></ObjectSomeValuesFrom></SubClassOf><SubClassOf><Class IRI="#spicyPepperoniPizza"/><Class IRI="#NamedPizza"/></SubClassOf><SubClassOf><Class IRI="#spicyPepperoniPizza"/><ObjectSomeValuesFrom><ObjectProperty IRI="#hasTopping"/><Class IRI="#JalapenoPepperTopping"/></ObjectSomeValuesFrom></SubClassOf><SubClassOf><Class IRI="#spicyPepperoniPizza"/><ObjectSomeValuesFrom><ObjectProperty IRI="#hasTopping"/><Class IRI="#MozzarellaTopping"/></ObjectSomeValuesFrom></SubClassOf><SubClassOf><Class IRI="#spicyPepperoniPizza"/><ObjectSomeValuesFrom><ObjectProperty IRI="#hasTopping"/><Class IRI="#PepperoniTopping"/></ObjectSomeValuesFrom></SubClassOf><SubClassOf><Class IRI="#spicyPepperoniPizza"/><ObjectSomeValuesFrom><ObjectProperty IRI="#hasTopping"/><Class IRI="#TomatoTopping"/></ObjectSomeValuesFrom></SubClassOf><DisjointClasses><Class IRI="#AnchovyTopping"/><Class IRI="#PrawnTopping"/><Class IRI="#TunaTopping"/></DisjointClasses><DisjointClasses><Class IRI="#CaperTopping"/><Class IRI="#MushroomTopping"/><Class IRI="#OliveTopping"/><Class IRI="#PepperTopping"/><Class IRI="#TomatoTopping"/></DisjointClasses><DisjointClasses><Class IRI="#CheeseTopping"/><Class IRI="#MeatTopping"/><Class IRI="#SeafoodTopping"/><Class IRI="#VegetableTopping"/></DisjointClasses><DisjointClasses><Class IRI="#DeepPanBase"/><Class IRI="#ThinAndCrispyBase"/></DisjointClasses><DisjointClasses><Class IRI="#GreenPepperTopping"/><Class IRI="#JalapenoPepperTopping"/><Class IRI="#RedPepperTopping"/></DisjointClasses><DisjointClasses><Class IRI="#HamTopping"/><Class IRI="#PepperoniTopping"/><Class IRI="#SalamiTopping"/><Class IRI="#SpicyBeefTopping"/></DisjointClasses><DisjointClasses><Class IRI="#MargheritaPizza"/><Class IRI="#olivePizza"/><Class IRI="#pepperoniPizza"/><Class IRI="#spicyPepperoniPizza"/></DisjointClasses><DisjointClasses><Class IRI="#MozzarellaTopping"/><Class IRI="#ParmesanTopping"/></DisjointClasses><DisjointClasses><Class IRI="#Pizza"/><Class IRI="#PizzaBase"/><Class IRI="#PizzaTopping"/></DisjointClasses></Ontology>';
+        
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(owl, 'text/xml');
+        const decls = Array.from(doc.getElementsByTagName('Declaration'));
+        const subs = Array.from(doc.getElementsByTagName('SubClassOf'));
+        const eqs = Array.from(doc.getElementsByTagName('EquivalentClasses'));
+        const disjs = Array.from(doc.getElementsByTagName('DisjointClasses'));
+        
+        const classes = [];
+        const seen = new Set();
+        
+        decls.filter(d => d.getElementsByTagName('Class').length > 0).forEach(d => {
+            const c = d.getElementsByTagName('Class')[0];
+            if (!c) return;
+            const iri = c.getAttribute('IRI') || c.getAttribute('abbreviatedIRI');
+            if (!iri) return;
+            const name = iri.replace('#', '').replace(':', '_');
+            if (seen.has(name)) return;
+            seen.add(name);
+            
+            const hasSub = subs.some(s => Array.from(s.getElementsByTagName('Class')).some(cc => {
+                const i = cc.getAttribute('IRI') || cc.getAttribute('abbreviatedIRI');
+                return i && i.replace('#', '').replace(':', '_') === name;
+            }));
+            const hasEq = eqs.some(e => Array.from(e.getElementsByTagName('Class')).some(cc => {
+                const i = cc.getAttribute('IRI') || cc.getAttribute('abbreviatedIRI');
+                return i && i.replace('#', '').replace(':', '_') === name;
+            }));
+            const hasDisj = disjs.some(dj => Array.from(dj.getElementsByTagName('Class')).some(cc => {
+                const i = cc.getAttribute('IRI') || cc.getAttribute('abbreviatedIRI');
+                return i && i.replace('#', '').replace(':', '_') === name;
+            }));
+            
+            let parents = [];
+            let rests = 0;
+            
+            subs.filter(s => {
+                const fc = s.getElementsByTagName('Class')[0];
+                if (!fc) return false;
+                const i = fc.getAttribute('IRI') || fc.getAttribute('abbreviatedIRI');
+                return i && i.replace('#', '').replace(':', '_') === name;
+            }).forEach(s => {
+                const all = s.getElementsByTagName('Class');
+                if (all.length > 1) {
+                    const pi = all[1].getAttribute('IRI') || all[1].getAttribute('abbreviatedIRI');
+                    if (pi) parents.push(pi.replace('#', '').replace(':', '_'));
+                }
+                rests += s.getElementsByTagName('ObjectSomeValuesFrom').length + 
+                         s.getElementsByTagName('ObjectAllValuesFrom').length + 
+                         s.getElementsByTagName('ObjectHasValue').length + 
+                         s.getElementsByTagName('ObjectMinCardinality').length + 
+                         s.getElementsByTagName('ObjectMaxCardinality').length;
+            });
+            
+            eqs.filter(e => {
+                const fc = e.getElementsByTagName('Class')[0];
+                if (!fc) return false;
+                const i = fc.getAttribute('IRI') || fc.getAttribute('abbreviatedIRI');
+                return i && i.replace('#', '').replace(':', '_') === name;
+            }).forEach(e => {
+                rests += e.getElementsByTagName('ObjectIntersectionOf').length + 
+                         e.getElementsByTagName('ObjectUnionOf').length + 
+                         e.getElementsByTagName('ObjectOneOf').length;
+            });
+            
+            classes.push({ name, hasDefinition: hasSub || hasEq || hasDisj, subClassOf: parents, restrictions: rests, hasEquivalent: hasEq, hasDisjoint: hasDisj });
+        });
+        
+        classes.sort((a, b) => a.name.localeCompare(b.name));
+        const def = classes.filter(c => c.hasDefinition);
+        const undef = classes.filter(c => !c.hasDefinition);
+        const cov = classes.length > 0 ? (def.length / classes.length * 100).toFixed(1) : 0;
+        
+        document.getElementById('app').innerHTML = '<div class="container"><div class="header"><h1>Pizza Ontology Coverage Report</h1><p>Heinrick Janiola\'s Pizza Ontology</p></div><div class="summary"><h2>Summary</h2><div class="progress-bar-container"><div class="progress-info"><span class="label">Coverage: ' + cov + '%</span><span class="count">' + def.length + '/' + classes.length + ' classes</span></div><div class="progress-bar"><div class="progress-fill" style="width: ' + cov + '%"></div></div></div><div class="stats-grid"><div class="stat-item"><div class="stat-label">Classes with definitions:</div><div class="stat-value">' + def.length + '</div></div><div class="stat-item"><div class="stat-label">Classes missing definitions:</div><div class="stat-value">' + undef.length + '</div></div></div></div><div class="main-grid"><div class="panel"><h2><svg class="icon icon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>Classes with Definitions</h2><div class="class-list">' + def.map(c => '<div class="class-item"><div class="class-name">' + c.name + '</div>' + (c.subClassOf.length > 0 ? '<div class="class-parent"><span class="label">Parent:</span> ' + c.subClassOf.join(', ') + '</div>' : '') + '<div class="class-tags">' + (c.restrictions > 0 ? '<span class="tag tag-blue">' + c.restrictions + ' restriction' + (c.restrictions !== 1 ? 's' : '') + '</span>' : '') + (c.hasEquivalent ? '<span class="tag tag-green">Equivalent</span>' : '') + (c.hasDisjoint ? '<span class="tag tag-yellow">Disjoint</span>' : '') + '</div></div>').join('') + '</div></div><div class="panel"><h2><svg class="icon icon-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>Classes Missing Definitions</h2><div class="class-list">' + (undef.length > 0 ? undef.map(c => '<div class="class-item undefined"><div class="class-name">' + c.name + '</div><div style="font-size: 14px; color: #374151;">No axioms found</div></div>').join('') : '<div class="no-data">All classes have definitions</div>') + '</div></div></div></div>';
+    </script>
+</body>
+</html>
