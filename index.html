@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C:\Users\heinz\Desktop\pizza\pizzaJaniola Ontology</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #fff; padding: 20px; line-height: 1.6; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { background: #f8f9fa; border: 2px solid #dee2e6; padding: 20px; margin-bottom: 20px; }
+        .header h1 { font-size: 28px; margin-bottom: 10px; color: #2c3e50; }
+        .header .subtitle { font-size: 16px; color: #6c757d; margin-bottom: 15px; }
+        .section { background: #f8f9fa; border: 2px solid #dee2e6; padding: 20px; margin-bottom: 20px; }
+        .section h2 { font-size: 22px; margin-bottom: 15px; color: #2c3e50; border-bottom: 2px solid #adb5bd; padding-bottom: 8px; }
+        .section h3 { font-size: 18px; margin-top: 15px; margin-bottom: 10px; color: #495057; }
+        .class-list { margin-left: 20px; list-style-type: disc; }
+        .class-item { margin-bottom: 8px; }
+        .subclass { margin-left: 30px; list-style-type: circle; margin-top: 5px; }
+        .property-box { background: #fff; border: 1px solid #ced4da; padding: 15px; margin-bottom: 15px; }
+        .property-box strong { color: #007bff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>C:\Users\heinz\Desktop\pizza\pizzaJaniola Ontology</h1>
+            <div class="subtitle">Edited & added on to have a python script (attached in email) parse and read my Pizza 
+            ontology that took about 2 full days to configure and understand unfamiliar 
+            concepts; implements and features SWRL, I also adopted ordered enumerated classes, inferencing, inversed
+              object properties, cardinal, existential and universal restriction with some help and understanding from
+                tutorials. by Heinrick Janiola. Reasoner used was HermiT 1.4.3.456</div>
+        </div>
+
+        <div class="section">
+            <h2>Class Hierarchy</h2>
+            <ul class="class-list">
+<li class="class-item" style="margin-top: 15px;"><strong>InterestingPizza</strong></li>
+<li class="class-item" style="margin-top: 15px;"><strong>Pizza</strong>
+<ul class="subclass">
+    <li class="class-item"><strong>MeatPizza</strong></li>
+    <li class="class-item"><strong>NamedPizza</strong></li>
+        <li class="class-item"><strong>MargheritaPizza</strong></li>
+        <li class="class-item"><strong>olivePizza</strong></li>
+        <li class="class-item"><strong>pepperoniPizza</strong></li>
+        <li class="class-item"><strong>spicyPepperoniPizza</strong></li>
+</ul>
+</li>
+<li class="class-item" style="margin-top: 15px;"><strong>PizzaBase</strong>
+<ul class="subclass">
+    <li class="class-item"><strong>DeepPanBase</strong></li>
+    <li class="class-item"><strong>ThinAndCrispyBase</strong></li>
+</ul>
+</li>
+<li class="class-item" style="margin-top: 15px;"><strong>PizzaTopping</strong>
+<ul class="subclass">
+    <li class="class-item"><strong>CheeseTopping</strong></li>
+    <li class="class-item"><strong>MeatTopping</strong></li>
+    <li class="class-item"><strong>SeafoodTopping</strong></li>
+    <li class="class-item"><strong>VegetableTopping</strong></li>
+        <li class="class-item"><strong>MozzarellaTopping</strong></li>
+        <li class="class-item"><strong>ParmesanTopping</strong></li>
+        <li class="class-item"><strong>HamTopping</strong></li>
+        <li class="class-item"><strong>PepperoniTopping</strong></li>
+        <li class="class-item"><strong>SalamiTopping</strong></li>
+        <li class="class-item"><strong>SpicyBeefTopping</strong></li>
+        <li class="class-item"><strong>AnchovyTopping</strong></li>
+        <li class="class-item"><strong>PrawnTopping</strong></li>
+        <li class="class-item"><strong>TunaTopping</strong></li>
+        <li class="class-item"><strong>CaperTopping</strong></li>
+        <li class="class-item"><strong>MushroomTopping</strong></li>
+        <li class="class-item"><strong>OliveTopping</strong></li>
+        <li class="class-item"><strong>PepperTopping</strong></li>
+        <li class="class-item"><strong>TomatoTopping</strong></li>
+            <li class="class-item"><strong>GreenPepperTopping</strong></li>
+            <li class="class-item"><strong>JalapenoPepperTopping</strong></li>
+            <li class="class-item"><strong>RedPepperTopping</strong></li>
+</ul>
+</li>
+<li class="class-item" style="margin-top: 15px;"><strong>Spiciness</strong></li>
+<li class="class-item" style="margin-top: 15px;"><strong>SpicyPizza</strong></li>
+<li class="class-item" style="margin-top: 15px;"><strong>VegetarianPizza</strong></li>
+<li class="class-item" style="margin-top: 15px;"><strong>pizzaLotsOfCalorie</strong></li>
+<li class="class-item" style="margin-top: 15px;"><strong>pizzaLowCalorie</strong></li>
+<li class="class-item" style="margin-top: 15px;"><strong>pizzaThatHasCheese</strong></li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Properties</h2>
+            <h3>Object Properties:</h3>
+<div class="property-box"><strong>PizzaMoreSpicyThan</strong><br>Domain: Pizza<br>Range: Pizza</div>
+<div class="property-box"><strong>hasBase</strong><br>Domain: Pizza<br>Range: PizzaBase</div>
+<div class="property-box"><strong>hasIngredient</strong><br>Domain: Thing<br>Range: Thing</div>
+<div class="property-box"><strong>hasSpiciness</strong><br>Domain: PizzaTopping<br>Range: Spiciness</div>
+<div class="property-box"><strong>hasTopping</strong><br>Domain: Pizza<br>Range: PizzaTopping</div>
+<div class="property-box"><strong>isBaseOf</strong><br>Domain: Thing<br>Range: Thing</div>
+<div class="property-box"><strong>isIngredientOf</strong><br>Domain: Thing<br>Range: Thing</div>
+<div class="property-box"><strong>isMilderThan</strong><br>Domain: Thing<br>Range: Thing</div>
+<div class="property-box"><strong>isSpicierThan</strong><br>Domain: Spiciness<br>Range: Spiciness</div>
+<div class="property-box"><strong>isToppingOf</strong><br>Domain: Thing<br>Range: Thing</div>
+<h3>Data Properties:</h3>
+<div class="property-box"><strong>hasCaloricContent</strong><br>Domain: Pizza<br>Range: <class 'int'></div>
+</div>
+
+<div class="section">
+<h2>Instances</h2>
+<p><strong>JalapenoPepperTopping:</strong> BigBadJalapeno</p>
+<p><strong>MargheritaPizza:</strong> MargheritaPizza1</p>
+<p><strong>Spiciness:</strong> Mild</p>
+<p><strong>Thing:</strong> ALittleSpicierTomatoPizza1, BigBadJalapenoPizza, Hot, Medium</p>
+<p><strong>TomatoTopping:</strong> ALittleSpicyTomato</p>
+<p><strong>olivePizza:</strong> olivePizza1</p>
+<p><strong>pepperoniPizza:</strong> pepperoniPizza1</p>
+<p><strong>spicyPepperoniPizza:</strong> spicyPepperoniPizza1</p>
+</div>
+</div>
+</body>
+</html>
